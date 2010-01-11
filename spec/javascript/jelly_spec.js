@@ -354,6 +354,22 @@ describe("Jelly", function() {
       });
     });
 
+    describe("an observer listening to on_notify", function() {
+      it("receives a notify event with the notify hash", function() {
+        var observer = {
+          on_notify: function() { }
+        };
+        spyOn(observer, 'on_notify');
+
+        Jelly.notifyObservers.call([observer], {
+          "arguments":["arg1", "arg2"],
+          "method":"on_my_method"
+        });
+
+        expect(observer.on_notify).wasCalledWith({method: "on_my_method", arguments: ["arg1", "arg2"]});
+      });
+    });
+
     describe("an observer listening to the notify method", function() {
       var observer;
       beforeEach(function() {

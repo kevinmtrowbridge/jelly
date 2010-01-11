@@ -85,18 +85,23 @@ $.extend(Jelly, {
         if (instruction.method) {
           for (var j = 0; j < observers.length; j++) {
             var observer = observers[j];
-            if (observer[instruction.method]) {
-              if (observer.detach && observer.detach()) {
-                Jelly.Observers.garbageCollectObserver.call(this, observer);
-              } else {
-                observer[instruction.method].apply(observer, instruction.arguments);
-              }
-            }
+            Jelly.Observers.notifyObserver.call(this, observer, instruction.method, instruction.arguments);
+            Jelly.Observers.notifyObserver.call(this, observer, 'on_notify', [instruction]);
           }
         }
 
         if (instruction.attach) {
           Jelly.Observers.attach.apply(this, instruction.attach);
+        }
+      }
+    },
+
+    notifyObserver: function(observer, method, arguments) {
+      if (observer[method]) {
+        if (observer.detach && observer.detach()) {
+          Jelly.Observers.garbageCollectObserver.call(this, observer);
+        } else {
+          observer[method].apply(observer, arguments);
         }
       }
     },
