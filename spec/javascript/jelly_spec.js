@@ -202,8 +202,8 @@ describe("Jelly", function() {
 
     describe("when bound to the default Jelly.observers collection", function() {
       describe("the active page object", function() {
-        describe("when the callback method is defined on the page", function() {
-          it("should call the callback method on the page", function() {
+        describe("when the notify method is defined on the page", function() {
+          it("should call the notify method on the page", function() {
             spyOn(page, 'on_my_method');
             Jelly.notifyObservers({
               "arguments":["arg1", "arg2"],
@@ -214,7 +214,7 @@ describe("Jelly", function() {
           });
 
           describe("when there are attached components", function() {
-            it("calls the callback methods in the order of the attached components", function() {
+            it("calls the notify methods in the order of the attached components", function() {
               var component = {
                 on_my_method: function() {
                 }
@@ -241,7 +241,7 @@ describe("Jelly", function() {
           });
         });
 
-        describe("when the page object does not define the callback method", function() {
+        describe("when the page object does not define the notify method", function() {
           it("does not blow up", function() {
             expect(page.on_my_undefined_method).toBe(undefined);
             Jelly.notifyObservers({
@@ -254,67 +254,65 @@ describe("Jelly", function() {
 
       describe("when the 'on' parameter is present", function() {
         beforeEach(function() {
-          callbackObject = {on_my_method: function() {
-          }};
-          callbackObject.secondObject = {on_my_method: function() {
-          }};
+          GlobalObject = {on_my_method: function() { }};
+          GlobalObject.secondObject = {on_my_method: function() { }};
         });
 
         afterEach(function() {
-          delete callbackObject;
+          delete GlobalObject;
         });
 
         describe("when the 'on' parameter is a string", function() {
-          describe("when the 'on' object defines the callback method", function() {
+          describe("when the 'on' object defines the notify method", function() {
             it("should call on_my_method on that object and not on the rest of the observers", function() {
-              spyOn(callbackObject, 'on_my_method');
-              spyOn(callbackObject.secondObject, 'on_my_method');
-              Jelly.attach(callbackObject);
+              spyOn(GlobalObject, 'on_my_method');
+              spyOn(GlobalObject.secondObject, 'on_my_method');
+              Jelly.attach(GlobalObject);
               Jelly.notifyObservers({
                 "arguments":["arg1", "arg2"],
                 "method":"on_my_method",
-                "on":"callbackObject.secondObject"
+                "on":"GlobalObject.secondObject"
               });
-              expect(callbackObject.on_my_method).wasNotCalled();
-              expect(callbackObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
+              expect(GlobalObject.on_my_method).wasNotCalled();
+              expect(GlobalObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
             });
           });
 
-          describe("when the 'on' object does not define the callback method", function() {
+          describe("when the 'on' object does not define the notify method", function() {
             it("does not blow up", function() {
-              expect(callbackObject.secondObject.on_my_undefined_method).toBe(undefined);
+              expect(GlobalObject.secondObject.on_my_undefined_method).toBe(undefined);
               Jelly.notifyObservers({
                 "arguments":["arg1", "arg2"],
                 "method":"on_my_undefined_method",
-                "on":"callbackObject.secondObject"
+                "on":"GlobalObject.secondObject"
               });
             });
           })
         });
 
         describe("when the 'on' parameter is an object", function() {
-          describe("when the 'on' object defines the callback method", function() {
+          describe("when the 'on' object defines the notify method", function() {
             it("should call on_my_method on that object and not on the rest of the observers", function() {
-              spyOn(callbackObject, 'on_my_method');
-              spyOn(callbackObject.secondObject, 'on_my_method');
-              Jelly.attach(callbackObject);
+              spyOn(GlobalObject, 'on_my_method');
+              spyOn(GlobalObject.secondObject, 'on_my_method');
+              Jelly.attach(GlobalObject);
               Jelly.notifyObservers({
                 "arguments":["arg1", "arg2"],
                 "method":"on_my_method",
-                "on": callbackObject.secondObject
+                "on": GlobalObject.secondObject
               });
-              expect(callbackObject.on_my_method).wasNotCalled();
-              expect(callbackObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
+              expect(GlobalObject.on_my_method).wasNotCalled();
+              expect(GlobalObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
             });
           });
 
-          describe("when the 'on' object does not define the callback method", function() {
+          describe("when the 'on' object does not define the notify method", function() {
             it("does not blow up", function() {
-              expect(callbackObject.secondObject.on_my_undefined_method).toBe(undefined);
+              expect(GlobalObject.secondObject.on_my_undefined_method).toBe(undefined);
               Jelly.notifyObservers({
                 "arguments":["arg1", "arg2"],
                 "method":"on_my_undefined_method",
-                "on": callbackObject.secondObject
+                "on": GlobalObject.secondObject
               });
             });
           })
@@ -356,7 +354,7 @@ describe("Jelly", function() {
       });
     });
 
-    describe("an observer listening to the callback method", function() {
+    describe("an observer listening to the notify method", function() {
       var observer;
       beforeEach(function() {
         observer = {
@@ -372,7 +370,7 @@ describe("Jelly", function() {
           expect(observer.detach).toBe(undefined);
         });
 
-        it("leaves the observer in Jelly.observers and calls the callback method on the observer", function() {
+        it("leaves the observer in Jelly.observers and calls the notify method on the observer", function() {
           spyOn(observer, "on_my_method");
 
           Jelly.notifyObservers({method: "on_my_method", arguments: []});
@@ -395,7 +393,7 @@ describe("Jelly", function() {
             Jelly.attach({component: anotherObserver, arguments: []});
           });
 
-          it("removes observer in Jelly.observers, does not call the callback method on the observer, and calls the other observers", function() {
+          it("removes observer in Jelly.observers, does not call the notify method on the observer, and calls the other observers", function() {
             spyOn(observer, "on_my_method");
             spyOn(anotherObserver, "on_my_method");
 
@@ -413,7 +411,7 @@ describe("Jelly", function() {
             }
           });
 
-          it("leaves the observer in Jelly.observers and calls the callback method on the observer", function() {
+          it("leaves the observer in Jelly.observers and calls the notify method on the observer", function() {
             spyOn(observer, "on_my_method");
 
             Jelly.notifyObservers({method: "on_my_method", arguments: []});
@@ -436,7 +434,7 @@ describe("Jelly", function() {
       });
 
       describe("when the method is present", function() {
-        it("attaches the given attachments to the observers and calls the callback on the recently attached observer", function() {
+        it("attaches the given attachments to the observers and calls the notify on the recently attached observer", function() {
           Jelly.notifyObservers.call(observers, {
             "arguments":["arg1", "arg2"],
             "method":"on_my_method",
@@ -469,8 +467,8 @@ describe("Jelly", function() {
       });
     });
 
-    describe("when given an array of callbacks", function() {
-      it("notifies the observers of all of the callback hashes", function() {
+    describe("when given an array of notify instructions", function() {
+      it("notifies the observers of all of the notify hashes", function() {
         page.on_my_method2 = function() {
         };
         spyOn(page, 'on_my_method');

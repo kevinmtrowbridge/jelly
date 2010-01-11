@@ -62,41 +62,41 @@ $.extend(Jelly, {
       }
     },
 
-    notify: function(callbacks) {
+    notify: function(instructions) {
       if (this == Jelly) {
         return Jelly.Observers.notify.apply(this.observers, arguments);
       }
-      if (!$.isArray(callbacks)) {
-        callbacks = [callbacks];
+      if (!$.isArray(instructions)) {
+        instructions = [instructions];
       }
 
       var pristineObservers = this.slice(0);
       var observers;
-      for (var i = 0; i < callbacks.length; i++) {
-        var callback = callbacks[i];
+      for (var i = 0; i < instructions.length; i++) {
+        var instruction = instructions[i];
 
         // Deprecate 'on' in favor of making each page action a Component.
-        if (callback.on) {
-          observers = [eval(callback.on)];
+        if (instruction.on) {
+          observers = [eval(instruction.on)];
         } else {
           observers = pristineObservers;
         }
 
-        if (callback.method) {
+        if (instruction.method) {
           for (var j = 0; j < observers.length; j++) {
             var observer = observers[j];
-            if (observer[callback.method]) {
+            if (observer[instruction.method]) {
               if (observer.detach && observer.detach()) {
                 Jelly.Observers.garbageCollectObserver.call(this, observer);
               } else {
-                observer[callback.method].apply(observer, callback.arguments);
+                observer[instruction.method].apply(observer, instruction.arguments);
               }
             }
           }
         }
 
-        if (callback.attach) {
-          Jelly.Observers.attach.apply(this, callback.attach);
+        if (instruction.attach) {
+          Jelly.Observers.attach.apply(this, instruction.attach);
         }
       }
     },
