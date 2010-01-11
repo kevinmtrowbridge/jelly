@@ -70,16 +70,16 @@ $.extend(Jelly, {
         callbacks = [callbacks];
       }
 
-      var observers = this.slice(0);
+      var pristineObservers = this.slice(0);
+      var observers;
       for (var i = 0; i < callbacks.length; i++) {
         var callback = callbacks[i];
 
         // Deprecate 'on' in favor of making each page action a Component.
         if (callback.on) {
-          var additionalObserver = eval(callback.on);
-          if (observers.indexOf(additionalObserver) == -1) {
-            observers.push(additionalObserver);
-          }
+          observers = [eval(callback.on)];
+        } else {
+          observers = pristineObservers;
         }
 
         if (callback.method) {

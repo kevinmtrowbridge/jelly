@@ -191,7 +191,7 @@ describe("Jelly", function() {
     });
   });
 
-  describe(".notifyObservers", function() {
+  describe(".Observers.notify", function() {
     beforeEach(function() {
       Jelly.Pages.add("MyPage", {
         on_my_method : function() {
@@ -254,9 +254,8 @@ describe("Jelly", function() {
 
       describe("when the 'on' parameter is present", function() {
         beforeEach(function() {
-          callbackObject = {};
-          callbackObject.secondObject = {on_my_method: function() {
-          }};
+          callbackObject = {on_my_method: function() { }};
+          callbackObject.secondObject = {on_my_method: function() { }};
         });
 
         afterEach(function() {
@@ -264,27 +263,17 @@ describe("Jelly", function() {
         });
 
         describe("when the 'on' object defines the callback method", function() {
-          it("should call on_my_method on that object", function() {
+          it("should call on_my_method on that object and not on the rest of the observers", function() {
+            spyOn(callbackObject, 'on_my_method');
             spyOn(callbackObject.secondObject, 'on_my_method');
+            Jelly.attach(callbackObject);
             Jelly.notifyObservers({
               "arguments":["arg1", "arg2"],
               "method":"on_my_method",
               "on":"callbackObject.secondObject"
             });
+            expect(callbackObject.on_my_method).wasNotCalled();
             expect(callbackObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
-          });
-
-          describe("when that object is also a component", function () {
-            it("should only call the callback once", function() {
-              Jelly.attach({component: callbackObject.secondObject, arguments: []});
-              spyOn(callbackObject.secondObject, 'on_my_method');
-              Jelly.notifyObservers({
-                "arguments":["arg1", "arg2"],
-                "method":"on_my_method",
-                "on":"callbackObject.secondObject"
-              });
-              expect(callbackObject.secondObject.on_my_method.callCount).toEqual(1);
-            });
           });
         });
 

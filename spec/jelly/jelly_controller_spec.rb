@@ -225,7 +225,7 @@ describe ApplicationController, :type => :controller do
           stub(request).xhr? {false}
 
           @controller.send(:raw_jelly_callback, :format => :json) do
-            jelly_callback_hash("foo", "grape").merge('bar' => 'baz')
+            jelly_notify_hash("foo", "grape").merge('bar' => 'baz')
           end
           callback = JSON.parse(response.body)
           callback["method"].should == "foo"
@@ -239,7 +239,7 @@ describe ApplicationController, :type => :controller do
           @controller.params[:callback] = "Jelly.notifyObservers"
 
           @controller.send(:raw_jelly_callback, :format => :jsonp) do
-            jelly_callback_hash("foo", "grape").merge('bar' => 'baz')
+            jelly_notify_hash("foo", "grape").merge('bar' => 'baz')
           end
           json = Regexp.new('Jelly\.notifyObservers\((.*)\);').match(response.body)[1]
           callback = JSON.parse(json)
@@ -252,7 +252,7 @@ describe ApplicationController, :type => :controller do
       describe "iframe" do
         it "responds with a the json in a textarea tag" do
           @controller.send(:raw_jelly_callback, :format => :iframe) do
-            jelly_callback_hash("foo", "grape").merge('bar' => 'baz')
+            jelly_notify_hash("foo", "grape").merge('bar' => 'baz')
           end
           body = response.body
           body.should =~ /^<textarea>/
@@ -274,7 +274,7 @@ describe ApplicationController, :type => :controller do
 
       it "responds with a json hash" do
         @controller.send(:raw_jelly_callback) do
-          jelly_callback_hash("foo", "grape").merge('bar' => 'baz')
+          jelly_notify_hash("foo", "grape").merge('bar' => 'baz')
         end
         callback = JSON.parse(response.body)
         callback["method"].should == "foo"
@@ -296,7 +296,7 @@ describe ApplicationController, :type => :controller do
 
         it "responds with a call to the given callback method with the json as an argument" do
           @controller.send(:raw_jelly_callback) do
-            jelly_callback_hash("foo", "grape").merge('bar' => 'baz')
+            jelly_notify_hash("foo", "grape").merge('bar' => 'baz')
           end
           json = Regexp.new('Jelly\.notifyObservers\((.*)\);').match(response.body)[1]
           callback = JSON.parse(json)
@@ -309,7 +309,7 @@ describe ApplicationController, :type => :controller do
       context "when there is not a callback param" do
         it "wraps the json response in a textarea tag to support File Uploads in an iframe target (see: http://malsup.com/jquery/form/#code-samples)" do
           @controller.send(:raw_jelly_callback) do
-            jelly_callback_hash("foo", "grape").merge('bar' => 'baz')
+            jelly_notify_hash("foo", "grape").merge('bar' => 'baz')
           end
           body = response.body
           body.should =~ /^<textarea>/
