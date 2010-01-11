@@ -53,7 +53,7 @@ $.extend(Jelly, {
     },
 
     evaluateComponent: function(component) {
-      return (typeof component == "string") ? eval(component) : component;
+      return eval(component);
     },
 
     pushIfObserver: function(observer) {
