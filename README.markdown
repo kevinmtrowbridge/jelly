@@ -322,7 +322,7 @@ in the javascript, pages/stories.js:
 
 By default, ajax callbacks functions are scoped to the current Jelly page. But if you want, you can also direct ajax
 callbacks to functions on Jelly components or other Javascript objects in your application. To
-do this, send an `:on` paremeter to `jelly_callback`, for example.
+do this, send an `:on` parameter to `jelly_callback`, for example.
 
 in the controller:
 
@@ -335,6 +335,12 @@ in the controller:
     end
 
 This will call `CommonHandler.on_successful_create()` with the response. 
+
+### Testing with Selenium
+
+Rather than adding some delay after page/AJAX load to ensure Jelly's notification callbacks have completed, Jelly
+now exposes the `Jelly.Observers.notifying` property.  While Jelly is notifying observers, this property will be true.
+Test scripts can wait for `Jelly.Observers.notifying == false` to ensure Jelly callbacks are complete.
 
 Jelly Development
 -----------------

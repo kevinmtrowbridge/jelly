@@ -200,6 +200,30 @@ describe("Jelly", function() {
       Jelly.attach({component: "Jelly.Page", arguments: ["MyPage", "index"]});
     });
 
+    describe(".notifying", function() {
+      it("should be set to true only while observers are being notified", function() {
+        expect(Jelly.Observers.notifying).toBe(false);
+        var notifyingWasSet = false;
+        page.on_my_method = function() {
+          notifyingWasSet = Jelly.Observers.notifying;
+        }
+        Jelly.notifyObservers({
+          "method":"on_my_method"
+        });
+        expect(notifyingWasSet).toBe(true);
+      });
+
+      it("should be reset to its prior value when notification is complete", function() {
+        Jelly.Observers.notifying = true;
+        spyOn(page, 'on_my_method');
+        Jelly.notifyObservers({
+          "method":"on_my_method"
+        });
+        expect(page.on_my_method).wasCalled();
+        expect(Jelly.Observers.notifying).toBe(true);
+      });
+    });
+
     describe("when bound to the default Jelly.observers collection", function() {
       describe("the active page object", function() {
         describe("when the notify method is defined on the page", function() {
@@ -254,8 +278,10 @@ describe("Jelly", function() {
 
       describe("when the 'on' parameter is present", function() {
         beforeEach(function() {
-          GlobalObject = {on_my_method: function() { }};
-          GlobalObject.secondObject = {on_my_method: function() { }};
+          GlobalObject = {on_my_method: function() {
+          }};
+          GlobalObject.secondObject = {on_my_method: function() {
+          }};
         });
 
         afterEach(function() {
@@ -357,7 +383,8 @@ describe("Jelly", function() {
     describe("an observer listening to on_notify", function() {
       it("receives a notify event with the notify hash", function() {
         var observer = {
-          on_notify: function() { }
+          on_notify: function() {
+          }
         };
         spyOn(observer, 'on_notify');
 
