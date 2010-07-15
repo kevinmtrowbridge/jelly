@@ -19,12 +19,11 @@ if(!window.Jelly) window.Jelly = new Object();
         authenticity_token: window._token
       });
     }
-    var observers = otherParams.observers || Jelly.observers;
     return $.extend({
       dataType: 'json',
       cache: false,
       success : function(callbacks) {
-        Jelly.Observers.notify.call(observers, callbacks);
+        Jelly.Observers.notify.call(otherParams.observers || Jelly.observers, callbacks);
       }
     }, otherParams);
   };
