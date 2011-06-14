@@ -1,14 +1,14 @@
-require 'spec/version'
-require 'spec/rake/spectask'
+require "rubygems"
+require "bundler"
+Bundler.setup
 require 'rake/rdoctask'
+require "rspec/core/rake_task"
 
 desc 'Default: run specs'
 task :default => :spec
 
 desc 'Test the jelly plugin with Rspec.'
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.libs << 'lib'
-  t.libs << 'spec'
+RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/**/*_spec.rb'
   t.verbose = true
 end
