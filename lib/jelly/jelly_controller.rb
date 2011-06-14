@@ -36,6 +36,6 @@ module JellyController
   end
 
   def jelly_callback_erb_template
-    "<%= instance_eval(&@jelly_block).to_json %>"
+    %Q{<%= instance_eval(&controller.instance_variable_get(:@jelly_block)).to_json.html_safe %>}
   end
 end

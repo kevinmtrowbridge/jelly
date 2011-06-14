@@ -61,7 +61,7 @@ describe JellyHelper, :type => :helper do
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg5')
-      assigns[:jelly_attachments].should == [
+      helper.instance_variable_get(:@jelly_attachments).should == [
         {'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg3']},
         {'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg5']},
       ]
@@ -70,7 +70,7 @@ describe JellyHelper, :type => :helper do
     it "adds a call to Jelly.attach in an $(document).ready block" do
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
       expected_args = ['arg1','arg2','arg3'].to_json
-      assigns[:jelly_attachments].should == [
+      helper.instance_variable_get(:@jelly_attachments).should == [
         {'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg3']}
       ]
 

@@ -1,3 +1,3 @@
-Dir["#{File.dirname(__FILE__)}/{controllers,helpers}/**/*_spec.rb"].each do |file|
+Dir["#{File.dirname(__FILE__)}/jelly/**/*_spec.rb"].each do |file|
   require file
 end
