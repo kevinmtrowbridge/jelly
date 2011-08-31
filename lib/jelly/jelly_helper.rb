@@ -14,10 +14,11 @@ module JellyHelper
   def spread_jelly
     attach_javascript_component("Jelly.Location")
     attach_javascript_component("Jelly.Page", controller.controller_path.camelcase, controller.action_name)
-    <<-HTML
+    helper = <<-HTML
       #{ window_token_javascript_tag}
       #{attach_javascript_component_javascript_tag(jelly_attachments)}
-    HTML.html_safe
+    HTML
+    helper.html_safe
   end
 
   def window_token_javascript_tag
