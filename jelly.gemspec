@@ -51,7 +51,7 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<capybara>, ["= 0.4.1.2"])
+      s.add_runtime_dependency(%q<capybara>, [">= 0.4.1.2"])
       s.add_runtime_dependency(%q<jeweler>, ["= 1.6.2"])
       s.add_runtime_dependency(%q<rails>, ["= 3.0.10"])
       s.add_runtime_dependency(%q<rake>, ["= 0.9.2"])
@@ -59,7 +59,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rspec>, ["= 2.6.0"])
       s.add_runtime_dependency(%q<rspec-rails>, ["= 2.6.1"])
       s.add_runtime_dependency(%q<sqlite3>, ["= 1.3.3"])
-      s.add_runtime_dependency(%q<rails>, [">= 2.3.0"])
     else
       s.add_dependency(%q<capybara>, ["= 0.4.1.2"])
       s.add_dependency(%q<jeweler>, ["= 1.6.2"])
@@ -69,10 +68,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>, ["= 2.6.0"])
       s.add_dependency(%q<rspec-rails>, ["= 2.6.1"])
       s.add_dependency(%q<sqlite3>, ["= 1.3.3"])
-      s.add_dependency(%q<rails>, [">= 2.3.0"])
     end
   else
-    s.add_dependency(%q<capybara>, ["= 0.4.1.2"])
+    s.add_dependency(%q<capybara>, [">= 0.4.1.2"])
     s.add_dependency(%q<jeweler>, ["= 1.6.2"])
     s.add_dependency(%q<rails>, ["= 3.0.10"])
     s.add_dependency(%q<rake>, ["= 0.9.2"])
@@ -80,7 +78,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, ["= 2.6.0"])
     s.add_dependency(%q<rspec-rails>, ["= 2.6.1"])
     s.add_dependency(%q<sqlite3>, ["= 1.3.3"])
-    s.add_dependency(%q<rails>, [">= 2.3.0"])
   end
 end
 
