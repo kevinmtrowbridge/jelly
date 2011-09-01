@@ -1,6 +1,6 @@
 source :rubygems
 
-gem "rails", "=3.0.10"
+gem "rails", ">=3.0.10"
 
 group :test do
   gem "capybara", "0.4.1.2"
