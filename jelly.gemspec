@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jelly}
-  s.version = "0.9.2"
+  s.version = "0.9.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pivotal Labs, Inc"]
@@ -72,7 +72,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<capybara>, [">= 0.4.1.2"])
     s.add_dependency(%q<jeweler>, ["= 1.6.2"])
-    s.add_dependency(%q<rails>, [">= 3.0.10"])
+    s.add_dependency(%q<rails>, [">= 3.1"])
     s.add_dependency(%q<rake>, ["= 0.9.2"])
     s.add_dependency(%q<rr>, ["= 1.0.2"])
     s.add_dependency(%q<rspec>, ["= 2.6.0"])
